@@ -360,8 +360,8 @@ async function tradeCycle() {
                     'Tentando executá-lo com um possível stop loss',
                   );
                   bot.telegram.sendMessage(botchat,
-                    `[${tradeCycleCount}] Only the first leg of the arbitrage was executed. ` +
-                    'Trying to execute it at a possible loss.'
+                    `[${tradeCycleCount}] Apenas a primeira etapa da arbitragem foi executada.` +
+                    'Tentando executá-lo com um possível stop loss',
                   );
                   secondLeg = await bc.offer({
                     amount,
