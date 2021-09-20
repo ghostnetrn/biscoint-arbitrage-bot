@@ -11,7 +11,7 @@ module.exports = envalid.cleanEnv(process.env, {
     amountCurrency: envalid.str({ default: "BRL" }),
     initialBuy: envalid.bool({ default: true }),
     minProfitPercent: envalid.num({ default: "0.03" }),
-    intervalSeconds: envalid.num({ default: "" }),
+    intervalSeconds: envalid.str({ default: "null" }),
     simulation: envalid.bool({ default: false }),
     executeMissedSecondLeg: envalid.bool({ default: true }),
     token: envalid.str({ default: "" }),
