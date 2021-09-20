@@ -6,24 +6,30 @@ import axios from 'axios';
 import Bottleneck from "bottleneck";
 
 // env variables
-let apiKey = process.env.APIKEY
-let apiSecret = process.env.APISECRET
-let amount = process.env.AMOUNT || 300
-let amountCurrency = process.env.AMOUNT_CURRENCY || "BRL"
-let initialBuy = process.env.INITIAL_BUY || true
-let minProfitPercent = process.env.MIN_PROFIT_PERCENT || 0.03
-let intervalSeconds = process.env.INTERVAL_SECONDS || null
-let simulation = process.env.SIMULATION || false
-let executeMissedSecondLeg = process.env.EXECUTE_MISSED_SECOND_LEG || true
-let token = process.env.BOT_TOKEN
-let botchat = process.env.BOT_CHAT
-let dataInicial = process.env.DATA_INICIAL || "01/09/2021"
-let valorInicial = process.env.VALOR_INICIAL || 300
-let multibot = process.env.MULTIBOT || false
-let botId = process.env.BOT_ID || "bot_1"
-let host1 = process.env.HOST1 || "localhost"
-let port = process.env.PORTA || 80
-let play = process.env.PLAY || true
+// let apiKey = process.env.APIKEY
+// let apiSecret = process.env.APISECRET
+// let amount = process.env.AMOUNT || 300
+// let amountCurrency = process.env.AMOUNT_CURRENCY || "BRL"
+// let initialBuy = process.env.INITIAL_BUY || true
+// let minProfitPercent = process.env.MIN_PROFIT_PERCENT || 0.03
+// let intervalSeconds = process.env.INTERVAL_SECONDS || null
+// let simulation = process.env.SIMULATION || false
+// let executeMissedSecondLeg = process.env.EXECUTE_MISSED_SECOND_LEG || true
+// let token = process.env.BOT_TOKEN
+// let botchat = process.env.BOT_CHAT
+// let dataInicial = process.env.DATA_INICIAL || "01/09/2021"
+// let valorInicial = process.env.VALOR_INICIAL || 300
+// let multibot = process.env.MULTIBOT || false
+// let botId = process.env.BOT_ID || "bot_1"
+// let host1 = process.env.HOST1 || "localhost"
+// let port = process.env.PORTA || 80
+// let play = process.env.PLAY || true
+
+let {
+  apiKey, apiSecret, amount, amountCurrency, initialBuy, minProfitPercent, intervalSeconds,
+  simulation, executeMissedSecondLeg, token, botchat, dataInicial, valorInicial, multibot,
+  botId, host1, port, play
+} = require("./env")
 
 // global variables
 let bc, lastTrade = 0, isQuote, balances;
@@ -34,6 +40,9 @@ let robo = new Object()
 robo.id = botId
 let botStatus = false
 let operando = false
+if (multibot == undefined || multibot == null) {
+  multibot = false
+}
 
 // Initializes the Biscoint API connector object.
 const init = () => {
@@ -181,8 +190,8 @@ const checkInterval = async () => {
   let minInterval = 2.0 * parseFloat(windowMs) / parseFloat(maxRequests) / 1000.0;
 
   if (!intervalSeconds) {
-      intervalSeconds = minInterval;
-      handleMessage(`Setting interval to ${intervalSeconds}s`);
+    intervalSeconds = minInterval;
+    handleMessage(`Setting interval to ${intervalSeconds}s`);
   } else if (intervalSeconds < minInterval) {
     handleMessage(`Interval too small (${intervalSeconds}s). Must be higher than ${minInterval.toFixed(1)}s`, 'error', true);
   }

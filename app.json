@@ -21,73 +21,82 @@
     "crypto"
   ],
   "env": {
-    "APIKEY": {
+    "apiKey": {
       "description": "Sua API Key da Biscoint",
       "required": true
     },
-    "APISECRET": {
+    "apiSecret": {
       "description": "Sua API Secret da Biscoint",
       "required": true
     },
-    "BOT_CHAT": {
+    "initialBuy": {
+      "description": "Valor inicial de venda. Valor padrao: true",
+      "required": true
+    },
+    "botchat": {
       "description": "Chat id do Telegram. Exemplo: 14872718712",
       "required": true
     },
-    "BOT_TOKEN": {
+    "token": {
       "description": "Token do Telegram. Exemplo: 1688943477:ACDhWI4A0-cy--L3IGgjjp2yuPq2TC7TJvg",
       "required": true
     },
-    "AMOUNT": {
+    "executeMissedSecondLeg": {
+      "description": "executeMissedSecondLeg",
+      "required": true,
+      "value": "true"
+    },
+    "amount": {
       "description": "Informe o valor das operações individuais de compra e venda, na moeda especificada no parâmetro amountCurrency. Por exemplo, se quer que as operações sejam de 100 reais, especifique amount: 300 e amountCurrency: 'BRL'. Valor padrão: 300.",
       "required": true,
       "value": "300.00"
     },
-    "AMOUNT_CURRENCY": {
+    "amountCurrency": {
       "description": "informe a moeda, 'BRL', 'BTC' ou 'ETH', em que está especificada a quantidade (parâmetro amount). A moeda fiat padrão é 'BRL', e a criptomoeda padrão é 'BTC', por exemplo, se especificar 'BRL' a arbitragem será realizada no par BRL/BTC, e caso especifique 'ETH', a arbitragem será realizada no par BRL/ETH. O seu eventual lucro (ou prejuízo) de arbitragem será acumulado na moeda oposta, ou seja, se especificar 'BRL', seu lucro será acumulado em BTC, e se especificar 'BTC', seu lucro será acumulado em BRL. Valor padrão: 'BRL'.",
       "required": true,
       "value": "BRL"
     },
-    "MIN_PROFIT_PERCENT": {
+    "minProfitPercent": {
       "description": "Percentual de lucro para acionar o bot",
       "required": true,
       "value": "0.03"
     },
-    "VALOR_INICIAL": {
+    "valorInicial": {
       "description": "Valor inicial que você depositou",
       "required": true,
       "value": "300.00"
     },
-    "DATA_INICIAL": {
+    "dataInicial": {
       "description": "Data que o bot iniciou. xx/xx/xxxx",
       "required": true,
       "value": "15/03/2020"
     },
-    "BOT_ID": {
+    "botId": {
       "description": "Id do bot: bot_1 ou bot_2",
       "required": true,
       "value": "bot_1"
     },
-    "SIMULATION": {
+    "simulation": {
       "description": "Ativar modo simulação",
       "required": true,
       "value": "false"
     },
-    "HOST1": {
+    "host1": {
       "description": "Servidor principal do bot",
       "required": true,
       "value": "localhost"
     },
-    "PORTA": {
+    "port": {
       "description": "Servidor secundário do bot",
       "required": true,
       "value": "80"
     },
-    "MULTIBOT": {
+    "multibot": {
       "description": "Servidor secundário do bot",
       "required": true,
       "value": "true"
     },
-    "INTERVAL_SECONDS": {
+    "intervalSeconds": {
       "description": "Intervalo em segundos. Padrão null",
       "required": true,
       "value": "null"
