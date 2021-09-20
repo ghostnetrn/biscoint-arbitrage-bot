@@ -9,17 +9,17 @@ import axios from 'axios';
 import Bottleneck from "bottleneck";
 
 // env variables
-let apiKey = process.env.APIKEY || "4d2b41a60ffe28a561d0883f9dba496f6e7178621a53737b180d449a58035603"
-let apiSecret = process.env.APISECRET || "c3690b1c6000f48e64dfc77c6c895ad3efd5a09c21c84106d1ffb0d84510db69"
+let apiKey = process.env.APIKEY
+let apiSecret = process.env.APISECRET
 let amount = process.env.AMOUNT || 300
 let amountCurrency = process.env.AMOUNT_CURRENCY || "BRL"
 let initialBuy = process.env.INITIAL_BUY || true
-let minProfitPercent = process.env.MIN_PROFIT_PERCENT || 1.8
+let minProfitPercent = process.env.MIN_PROFIT_PERCENT
 let intervalSeconds = process.env.INTERVAL_SECONDS || null
 let simulation = process.env.SIMULATION || false
 let executeMissedSecondLeg = process.env.EXECUTE_MISSED_SECOND_LEG || true
-let token = process.env.BOT_TOKEN || "1952003996:AAGrQttRROPzFF0YVVTEjojYKUXC4wdjpms"
-let botchat = process.env.BOT_CHAT || "123425682"
+let token = process.env.BOT_TOKEN
+let botchat = process.env.BOT_CHAT
 let dataInicial = process.env.DATA_INICIAL || "01/09/2021"
 let valorInicial = process.env.VALOR_INICIAL || 300
 let multibot = process.env.MULTIBOT || false
@@ -241,171 +241,168 @@ async function tradeCycle() {
 
   handleMessage(`[${tradeCycleCount}] Trade cycle started...`);
   if (play) {
-    if (!operando) {
-      if (multibot) {
-        const res = await axios.post(`http://${host1}:${port}/status`, robo)
-        botStatus = res.data
-      } else {
-        botStatus = true
-      }
-      handleMessage(`O botStatus é: ${botStatus}`)
-      handleMessage(`Multibot: ${multibot}`)
-      handleMessage(`Intervalo em segundos: ${intervalSeconds}s`)
-      if (botStatus) {
-        try {
+    if (multibot) {
+      const res = await axios.post(`http://${host1}:${port}/status`, robo)
+      botStatus = res.data
+    } else {
+      botStatus = true
+    }
+    handleMessage(`O botStatus é: ${botStatus}`)
+    handleMessage(`Multibot: ${multibot}`)
+    handleMessage(`Intervalo em segundos: ${intervalSeconds}s`)
+    if (botStatus) {
+      try {
 
-          startedAt = Date.now();
+        startedAt = Date.now();
 
-          const buyOffer = await bc.offer({
-            amount,
-            isQuote,
-            op: 'buy',
-          });
+        const buyOffer = await bc.offer({
+          amount,
+          isQuote,
+          op: 'buy',
+        });
 
-          finishedAt = Date.now();
+        finishedAt = Date.now();
 
-          handleMessage(`[${tradeCycleCount}] Oferta de compra: ${buyOffer.efPrice} (${finishedAt - startedAt} ms)`);
+        handleMessage(`[${tradeCycleCount}] Oferta de compra: ${buyOffer.efPrice} (${finishedAt - startedAt} ms)`);
 
-          startedAt = Date.now();
+        startedAt = Date.now();
 
-          const sellOffer = await bc.offer({
-            amount,
-            isQuote,
-            op: 'sell',
-          });
+        const sellOffer = await bc.offer({
+          amount,
+          isQuote,
+          op: 'sell',
+        });
 
-          finishedAt = Date.now();
+        finishedAt = Date.now();
 
-          handleMessage(`[${tradeCycleCount}] Oferta de venda: ${sellOffer.efPrice} (${finishedAt - startedAt} ms)`);
+        handleMessage(`[${tradeCycleCount}] Oferta de venda: ${sellOffer.efPrice} (${finishedAt - startedAt} ms)`);
 
-          const profit = percent(buyOffer.efPrice, sellOffer.efPrice);
-          const profitBRL = (amount * profit) / 100
-          handleMessage(`[${tradeCycleCount}] Calculated profit: ${profit.toFixed(3)}%`);
-          if (
-            profit >= minProfitPercent
-          ) {
-            let firstOffer, secondOffer, firstLeg, secondLeg;
-            try {
-              if (initialBuy) {
-                firstOffer = buyOffer;
-                secondOffer = sellOffer;
-              } else {
-                firstOffer = sellOffer;
-                secondOffer = buyOffer;
-              }
-
-              startedAt = Date.now();
-
-              if (simulation) {
-                handleMessage(`[${tradeCycleCount}] Would execute arbitrage if simulation mode was not enabled`);
-                bot.telegram.sendMessage(botchat, `[${tradeCycleCount}] Executaria se o modo simulação não estive habilitado`)
-              } else {
-                firstLeg = await bc.confirmOffer({
-                  offerId: firstOffer.offerId,
-                });
-
-                secondLeg = await bc.confirmOffer({
-                  offerId: secondOffer.offerId,
-                });
-              }
-
-              finishedAt = Date.now();
-
-              lastTrade = Date.now();
-
-              handleMessage(`[${tradeCycleCount}] Success, profit: + ${profit.toFixed(3)}% (${finishedAt - startedAt} ms)`);
-              bot.telegram.sendMessage(botchat, `[${tradeCycleCount}] \u{1F911} Success, profit: + ${profit.toFixed(3)}% (${finishedAt - startedAt} ms\n R$ ${profitBRL.toFixed(2)})`)
-
-            } catch (error) {
-              handleMessage(`[${tradeCycleCount}] Error on confirm offer: ${error.error}`, 'error');
-              bot.telegram.sendMessage(botchat, `[${tradeCycleCount}] Error on confirm offer: ${error.error}`)
-              console.error(error);
-
-              if (firstLeg && !secondLeg) {
-                // probably only one leg of the arbitrage got executed, we have to accept loss and rebalance funds.
-                try {
-                  // first we ensure the leg was not actually executed
-                  let secondOp = initialBuy ? 'sell' : 'buy';
-                  const trades = await bc.trades({ op: secondOp });
-                  if (_.find(trades, t => t.offerId === secondOffer.offerId)) {
-                    handleMessage(`[${tradeCycleCount}] The second leg was executed despite of the error. Good!`);
-                  } else if (!executeMissedSecondLeg) {
-                    handleMessage(
-                      `[${tradeCycleCount}] Only the first leg of the arbitrage was executed, and the ` +
-                      'executeMissedSecondLeg is false, so we won\'t execute the second leg.',
-                    );
-                  } else {
-                    handleMessage(
-                      `[${tradeCycleCount}] Only the first leg of the arbitrage was executed. ` +
-                      'Trying to execute it at a possible loss.',
-                    );
-                    bot.telegram.sendMessage(botchat,
-                      `[${tradeCycleCount}] Only the first leg of the arbitrage was executed. ` +
-                      'Trying to execute it at a possible loss.'
-                    );
-                    secondLeg = await bc.offer({
-                      amount,
-                      isQuote,
-                      op: secondOp,
-                    });
-                    await bc.confirmOffer({
-                      offerId: secondLeg.offerId,
-                    });
-                    handleMessage(`[${tradeCycleCount}] The second leg was executed and the balance was normalized`);
-                    //bot.telegram.sendMessage(botchat, `[${tradeCycleCount}] The second leg was executed and the balance was normalized`);
-                  }
-                } catch (error) {
-                  handleMessage(
-                    `[${tradeCycleCount}] Fatal error. Unable to recover from incomplete arbitrage. Exiting.`, 'fatal',
-                  );
-                  //await sleep(500);
-                  //process.exit(1);
-                  // Vende o saldo em BTC com stop loss
-                  let { BRL, BTC } = await bc.balance();
-                  if (BTC >= 0.0001) {
-                    try {
-                      bot.telegram.sendMessage(botchat, `Tentando realizar o lucro!`)
-                      let lucroRealizado = await realizarLucro(BTC)
-                      if (lucroRealizado) {
-                        bot.telegram.sendMessage(botchat, "ok! Lucro realizado")
-                        inicializarSaldo();
-                        handleMessage(`Lucro realizado. Valor: ${BTC}`)
-                      }
-                    } catch (error) {
-                      //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
-                      handleMessage(`${JSON.stringify(error)}`)
-                    }
-                  }
-
-                }
-              }
+        const profit = percent(buyOffer.efPrice, sellOffer.efPrice);
+        const profitBRL = (amount * profit) / 100
+        handleMessage(`[${tradeCycleCount}] Calculated profit: ${profit.toFixed(3)}%`);
+        if (
+          profit >= minProfitPercent
+        ) {
+          let firstOffer, secondOffer, firstLeg, secondLeg;
+          try {
+            if (initialBuy) {
+              firstOffer = buyOffer;
+              secondOffer = sellOffer;
+            } else {
+              firstOffer = sellOffer;
+              secondOffer = buyOffer;
             }
-          }
-        } catch (error) {
-          handleMessage(`[${tradeCycleCount}] Error on get offer: ${error.error || error.message}`, 'error');
-          console.error(error);
-          let { BRL, BTC } = await bc.balance();
-          if (BTC >= 0.0001) {
-            try {
-              bot.telegram.sendMessage(botchat, `Tentando realizar o lucro!`)
-              let lucroRealizado = await realizarLucro(BTC)
-              if (lucroRealizado) {
-                bot.telegram.sendMessage(botchat, "ok! Lucro realizado")
-                inicializarSaldo();
-                handleMessage(`Lucro realizado. Valor: ${BTC}`)
+
+            startedAt = Date.now();
+
+            if (simulation) {
+              handleMessage(`[${tradeCycleCount}] Would execute arbitrage if simulation mode was not enabled`);
+              bot.telegram.sendMessage(botchat, `[${tradeCycleCount}] Executaria se o modo simulação não estive habilitado`)
+            } else {
+              firstLeg = await bc.confirmOffer({
+                offerId: firstOffer.offerId,
+              });
+
+              secondLeg = await bc.confirmOffer({
+                offerId: secondOffer.offerId,
+              });
+            }
+
+            finishedAt = Date.now();
+
+            lastTrade = Date.now();
+
+            handleMessage(`[${tradeCycleCount}] Success, profit: + ${profit.toFixed(3)}% (${finishedAt - startedAt} ms)`);
+            bot.telegram.sendMessage(botchat, `[${tradeCycleCount}] \u{1F911} Success, profit: + ${profit.toFixed(3)}% (${finishedAt - startedAt} ms\n R$ ${profitBRL.toFixed(2)})`)
+
+          } catch (error) {
+            handleMessage(`[${tradeCycleCount}] Error on confirm offer: ${error.error}`, 'error');
+            bot.telegram.sendMessage(botchat, `[${tradeCycleCount}] Error on confirm offer: ${error.error}`)
+            console.error(error);
+
+            if (firstLeg && !secondLeg) {
+              // probably only one leg of the arbitrage got executed, we have to accept loss and rebalance funds.
+              try {
+                // first we ensure the leg was not actually executed
+                let secondOp = initialBuy ? 'sell' : 'buy';
+                const trades = await bc.trades({ op: secondOp });
+                if (_.find(trades, t => t.offerId === secondOffer.offerId)) {
+                  handleMessage(`[${tradeCycleCount}] The second leg was executed despite of the error. Good!`);
+                } else if (!executeMissedSecondLeg) {
+                  handleMessage(
+                    `[${tradeCycleCount}] Only the first leg of the arbitrage was executed, and the ` +
+                    'executeMissedSecondLeg is false, so we won\'t execute the second leg.',
+                  );
+                } else {
+                  handleMessage(
+                    `[${tradeCycleCount}] Only the first leg of the arbitrage was executed. ` +
+                    'Trying to execute it at a possible loss.',
+                  );
+                  bot.telegram.sendMessage(botchat,
+                    `[${tradeCycleCount}] Only the first leg of the arbitrage was executed. ` +
+                    'Trying to execute it at a possible loss.'
+                  );
+                  secondLeg = await bc.offer({
+                    amount,
+                    isQuote,
+                    op: secondOp,
+                  });
+                  await bc.confirmOffer({
+                    offerId: secondLeg.offerId,
+                  });
+                  handleMessage(`[${tradeCycleCount}] The second leg was executed and the balance was normalized`);
+                  //bot.telegram.sendMessage(botchat, `[${tradeCycleCount}] The second leg was executed and the balance was normalized`);
+                }
+              } catch (error) {
+                handleMessage(
+                  `[${tradeCycleCount}] Fatal error. Unable to recover from incomplete arbitrage. Exiting.`, 'fatal',
+                );
+                //await sleep(500);
+                //process.exit(1);
+                // Vende o saldo em BTC com stop loss
+                let { BRL, BTC } = await bc.balance();
+                if (BTC >= 0.0001) {
+                  try {
+                    bot.telegram.sendMessage(botchat, `Tentando realizar o lucro!`)
+                    let lucroRealizado = await realizarLucro(BTC)
+                    if (lucroRealizado) {
+                      bot.telegram.sendMessage(botchat, "ok! Lucro realizado")
+                      inicializarSaldo();
+                      handleMessage(`Lucro realizado. Valor: ${BTC}`)
+                    }
+                  } catch (error) {
+                    //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
+                    handleMessage(`${JSON.stringify(error)}`)
+                  }
+                }
+
               }
-            } catch (error) {
-              //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
-              handleMessage(`${JSON.stringify(error)}`)
             }
           }
         }
-      } else {
-        handleMessage('Aguardando...');
+      } catch (error) {
+        handleMessage(`[${tradeCycleCount}] Error on get offer: ${error.error || error.message}`, 'error');
+        console.error(error);
+        let { BRL, BTC } = await bc.balance();
+        if (BTC >= 0.0001) {
+          try {
+            bot.telegram.sendMessage(botchat, `Tentando realizar o lucro!`)
+            let lucroRealizado = await realizarLucro(BTC)
+            if (lucroRealizado) {
+              bot.telegram.sendMessage(botchat, "ok! Lucro realizado")
+              inicializarSaldo();
+              handleMessage(`Lucro realizado. Valor: ${BTC}`)
+            }
+          } catch (error) {
+            //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
+            handleMessage(`${JSON.stringify(error)}`)
+          }
+        }
       }
     } else {
-      handleMessage('Operando! Aguardando conclusão...');
+      handleMessage('Aguardando...');
     }
+
   } else {
     handleMessage('Robô pausado pelo usuário... Para iniciar aperte o botão Iniciar Robô no Telegram.');
   }
