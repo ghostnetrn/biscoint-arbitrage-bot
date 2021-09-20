@@ -95,7 +95,7 @@
     "multibot": {
       "description": "Servidor secundário do bot",
       "required": true,
-      "value": "true"
+      "value": "false"
     },
     "intervalSeconds": {
       "description": "Intervalo em segundos. Padrão null",
