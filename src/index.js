@@ -446,7 +446,7 @@ async function tradeCycle() {
 // Starts trading, scheduling trades to happen every 'intervalSeconds' seconds.
 const startTrading = async () => {
   handleMessage('Starting trades');
-  bot.telegram.sendMessage(botchat, 'Iniciado trades!', keyboard)
+  bot.telegram.sendMessage(botchat, '\u{1F911} Iniciando Trades!', keyboard)
   tradeCycle();
 };
 
