@@ -86,6 +86,11 @@
       "description": "Servidor secundário do bot",
       "required": true,
       "value": "true"
+    },
+    "INTERVAL_SECONDS": {
+      "description": "Intervalo em segundos. Padrão null",
+      "required": true,
+      "value": "null"
     }
   }
 }
