@@ -3,8 +3,8 @@ import _ from 'lodash';
 
 
 const config = {
-  apiKey: null,
-  apiSecret: null,
+  apiKey: '4d2b41a60ffe28a561d0883f9dba496f6e7178621a53737b180d449a58035603',
+  apiSecret: 'c3690b1c6000f48e64dfc77c6c895ad3efd5a09c21c84106d1ffb0d84510db69',
   amount: 100,
   amountCurrency: 'BRL',
   initialBuy: true,

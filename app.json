@@ -1,0 +1,91 @@
+{
+  "name": "bitcoin-bot",
+  "description": "Biscoint Bot",
+  "logo": "https://biscoint.io/images/biscoint-icon.svg",
+  "repository": "https://github.com/Biscoint/biscoint-arbitrage-bot",
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "keywords": [
+    "node",
+    "bitcoin",
+    "trading",
+    "trader",
+    "bot",
+    "market",
+    "maker",
+    "biscoint",
+    "crypto"
+  ],
+  "env": {
+    "API_KEY": {
+      "description": "Sua API Key da Biscoint",
+      "required": true
+    },
+    "API_SECRET": {
+      "description": "Sua API Secret da Biscoint",
+      "required": true
+    },
+    "BOT_CHAT": {
+      "description": "Campo OPCIONAL - Chat id do Telegram. Acesse o bot https://t.me/IdentificacaoTelegram_bot e veja seu ID. Exemplo de ID: 14872718712",
+      "required": true
+    },
+    "BOT_TOKEN": {
+      "description": "Campo OPCIONAL - Crie um bot no Telegram. Assista ao vídeo https://youtu.be/hJs7r-sMcUc?t=161. Exemplo de Token: 1688943477:ACDhWI4A0-cy--L3IGgjjp2yuPq2TC7TJvg",
+      "required": true
+    },
+    "AMOUNT": {
+      "description": "Campo OPCIONAL - informe o valor das operações individuais de compra e venda, na moeda especificada no parâmetro amountCurrency. Por exemplo, se quer que as operações sejam de 100 reais, especifique amount: 100 e amountCurrency: 'BRL'. Valor padrão: 300.",
+      "required": true,
+      "value": "300.00"
+    },
+    "AMOUNT_CURRENCY": {
+      "description": "informe a moeda, 'BRL', 'BTC' ou 'ETH', em que está especificada a quantidade (parâmetro amount). A moeda fiat padrão é 'BRL', e a criptomoeda padrão é 'BTC', por exemplo, se especificar 'BRL' a arbitragem será realizada no par BRL/BTC, e caso especifique 'ETH', a arbitragem será realizada no par BRL/ETH. O seu eventual lucro (ou prejuízo) de arbitragem será acumulado na moeda oposta, ou seja, se especificar 'BRL', seu lucro será acumulado em BTC, e se especificar 'BTC', seu lucro será acumulado em BRL. Valor padrão: 'BRL'.",
+      "required": true,
+      "value": "BRL"
+    },
+    "MIN_PROFIT_PERCENT": {
+      "description": "Informe o lucro mínimo potencial, em percentual, para que o robô tente executar a arbitragem. Por exemplo, informe 0.01 para que o robô execute arbitragem sempre que o lucro potencial seja igual ou maior a 0,01%. Valor padrão: 0.02",
+      "required": true,
+      "value": "0.02"
+    },
+    "INITIAL_BUY": {
+      "description": "Campo OPCIONAL - informe true para que o robô execute primeiro compra e depois venda, false para que execute primeiro venda depois compra. Se o seu saldo inicial está em reais, use true, se está em BTC, use false. Valor padrão: true",
+      "required": false,
+      "value": "true"
+    },
+    "SIMULATION": {
+      "description": "Campo OPCIONAL - informe true para rodar em modo simulação, em que as operações de compra e venda não são de fato executadas. Valor padrão: false.",
+      "required": false,
+      "value": "false"
+    },
+    "EXECUTE_MISSED_SECOND_LEG": {
+      "description": "Campo OPCIONAL - informe true para que o robô tente executar a segunda perna da arbitragem mesmo com prejuízo, quando ocorrer da primeira perna ser executada e a segunda falhar. Valor padrão: true.",
+      "required": false,
+      "value": "true"
+    },
+    "MULTIBOT": {
+      "description": "Campo OPCIONAL - Se for utilizar mais de um bot na mesma conta, inserir true e informar o ip do servidor. Valor padrão: false.",
+      "required": false,
+      "value": "false"
+    },
+    "BOT_ID": {
+      "description": "Campo OPCIONAL - id do bot_1 ou bot_2. Valor padrão: bot_1.",
+      "required": false,
+      "value": "bot_1"
+    },
+    "HOST1": {
+      "description": "Campo OPCIONAL - Irá usar um servidor para parear dois bots na mesma conta. Valor padrão: false.",
+      "required": false,
+      "value": "localhost"
+    },
+    "PORTA": {
+      "description": "Campo OPCIONAL - Porta do servidor. Valor padrão: 80.",
+      "required": false,
+      "value": "80"
+    }
+  }
+}

@@ -2,6 +2,8 @@
 
 Reference implementation using the Biscoint library for NodeJS.
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/ghostnetrn/biscoint-arbitrage-bot)
+
 ## How it works?
 
 Biscoint connects you to several brokerages. It is normal that during natural market movements, the price in one broker is cheaper than in another, thus arbitrage.
