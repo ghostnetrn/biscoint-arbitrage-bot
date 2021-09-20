@@ -181,7 +181,7 @@ const checkInterval = async () => {
   let minInterval = 2.0 * parseFloat(windowMs) / parseFloat(maxRequests) / 1000.0;
 
   if (!intervalSeconds) {
-    if (multibot) {
+    if (!multibot) {
       intervalSeconds = 2.5;
       handleMessage(`Setting interval to ${intervalSeconds}s`);
     } else {
