@@ -2,6 +2,9 @@
 
 Implementação de referência que exemplifica o uso da biblioteca do Biscoint para NodeJS, [biscoint-api-node](https://github.com/Biscoint/biscoint-api-node), para verificar a existência de oportunidades de arbitragem e executá-las.
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/ghostnetrn/biscoint-arbitrage-bot)
+
+
 _**Não utilize esse código em produção para valores significativos!!**_
 
 ## Como funciona?
