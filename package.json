@@ -1,7 +1,10 @@
 {
   "name": "biscoint-arbitrage-bot",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "index.js",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "repository": "https://github.com/Biscoint/biscoint-arbitrage-bot.git",
   "author": "Toledo <gustavo@obex.pw>",
   "license": "MIT",
