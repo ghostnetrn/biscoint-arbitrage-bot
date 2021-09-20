@@ -28,7 +28,7 @@ let play = process.env.PLAY || true
 // global variables
 let bc, lastTrade = 0, isQuote, balances;
 const bot = new Telegraf(token)
-console.log(EXECUTE_MISSED_SECOND_LEG)
+console.log(executeMissedSecondLeg)
 // multibot
 let robo = new Object()
 robo.id = botId
