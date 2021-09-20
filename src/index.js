@@ -98,7 +98,7 @@ bot.action('startbot', (ctx) => {
     ctx.reply('\u{1F51B} O bot já está em operação', keyboard);
   } else {
     play = true
-    ctx.replyWithMarkdown(`\u{1F911} Iniciando Trades...`, keyboard);
+    ctx.replyWithMarkdown(`\u{1F911} Iniciando Trades...`);
   }
 }
 );
