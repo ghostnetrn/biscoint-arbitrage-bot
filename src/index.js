@@ -59,7 +59,7 @@ const init = () => {
   }
 
   isQuote = amountCurrency === 'BRL';
-  console.log(apiKey, apiSecret)
+  //console.log(apiKey, apiSecret)
   bc = new Biscoint({
     apiKey: apiKey,
     apiSecret: apiSecret
