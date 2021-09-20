@@ -98,9 +98,9 @@
       "value": "false"
     },
     "intervalSeconds": {
-      "description": "Intervalo em segundos. Padrão null",
+      "description": "Intervalo em segundos. Padrão false",
       "required": true,
-      "value": "null"
+      "value": "false"
     }
   }
 }

@@ -40,7 +40,7 @@ let robo = new Object()
 robo.id = botId
 let botStatus = false
 let operando = false
-if (multibot == undefined || multibot == null) {
+if (multibot == undefined || multibot == null || host1 === 'localhost') {
   multibot = false
 }
 
@@ -190,8 +190,13 @@ const checkInterval = async () => {
   let minInterval = 2.0 * parseFloat(windowMs) / parseFloat(maxRequests) / 1000.0;
 
   if (!intervalSeconds) {
-    intervalSeconds = minInterval;
-    handleMessage(`Setting interval to ${intervalSeconds}s`);
+    if (multibot) {
+      intervalSeconds = 2.5
+      handleMessage(`Setting interval to ${intervalSeconds}s`);
+    } else {
+      intervalSeconds = minInterval;
+      handleMessage(`Setting interval to ${intervalSeconds}s`);
+    }
   } else if (intervalSeconds < minInterval) {
     handleMessage(`Interval too small (${intervalSeconds}s). Must be higher than ${minInterval.toFixed(1)}s`, 'error', true);
   }
@@ -245,7 +250,7 @@ async function tradeCycle() {
 
   handleMessage(`[${tradeCycleCount}] Trade cycle started...`);
   if (play) {
-    if (!multibot) {
+    if (multibot) {
       const res = await axios.post(`http://${host1}:${port}/status`, robo)
       botStatus = res.data
     } else {
