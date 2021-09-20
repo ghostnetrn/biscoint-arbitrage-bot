@@ -239,7 +239,7 @@ async function tradeCycle() {
 
   handleMessage(`[${tradeCycleCount}] Trade cycle started...`);
   if (play) {
-    if (!multibot) {
+    if (multibot === true) {
       const res = await axios.post(`http://${host1}:${port}/status`, robo)
       botStatus = res.data
     } else {
