@@ -12,7 +12,7 @@ let amount = process.env.AMOUNT || 300
 let amountCurrency = process.env.AMOUNT_CURRENCY || "BRL"
 let initialBuy = process.env.INITIAL_BUY || true
 let minProfitPercent = process.env.MIN_PROFIT_PERCENT
-let intervalSeconds = process.env.INTERVAL_SECONDS || 'null'
+let intervalSeconds = process.env.INTERVAL_SECONDS || null
 let simulation = process.env.SIMULATION || false
 let executeMissedSecondLeg = process.env.EXECUTE_MISSED_SECOND_LEG || true
 let token = process.env.BOT_TOKEN
@@ -180,11 +180,9 @@ const checkInterval = async () => {
   handleMessage(`Offer Rate limits: ${maxRequests} request per ${windowMs}ms.`);
   let minInterval = 2.0 * parseFloat(windowMs) / parseFloat(maxRequests) / 1000.0;
 
-  if (intervalSeconds == null && multibot == false) {
+  if (!intervalSeconds) {
     intervalSeconds = minInterval;
     handleMessage(`Setting interval to ${intervalSeconds}s`);
-  } else if (intervalSeconds == null && multibot === true) {
-    intervalSeconds = 2.5;
   } else if (intervalSeconds < minInterval) {
     handleMessage(`Interval too small (${intervalSeconds}s). Must be higher than ${minInterval.toFixed(1)}s`, 'error', true);
   }
