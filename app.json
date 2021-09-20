@@ -78,7 +78,7 @@
       "value": "bot_1"
     },
     "HOST1": {
-      "description": "Irá usar um servidor para parear dois bots na mesma conta. Valor padrão: false.",
+      "description": "Irá usar um servidor para parear dois bots na mesma conta. Valor padrão: localhost.",
       "required": false,
       "value": "localhost"
     },
