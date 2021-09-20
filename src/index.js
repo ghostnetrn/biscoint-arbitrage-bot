@@ -1,11 +1,8 @@
 import Biscoint from 'biscoint-api-node';
 import _ from 'lodash';
-import player from 'play-sound';
-//import config from './config.js';
 import { Telegraf, Markup } from 'telegraf';
 import moment from 'moment';
 import axios from 'axios';
-
 import Bottleneck from "bottleneck";
 
 // env variables

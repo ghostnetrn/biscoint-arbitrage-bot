@@ -86,6 +86,16 @@
       "description": "Porta do servidor. Valor padrão: 80.",
       "required": false,
       "value": "80"
+    },
+    "DATA_INICIAL": {
+      "description": "Data que você está ativando o bot.",
+      "required": false,
+      "value": "01/09/2021"
+    },
+    "VALOR_INICIAL": {
+      "description": "Valor inicial que você depositou.",
+      "required": false,
+      "value": "300"
     }
   }
 }
