@@ -1,8 +1,8 @@
 {
   "name": "bitcoin-bot",
-  "description": "Biscoint Bot",
+  "description": "Arbitragem com Bitcoin",
   "logo": "https://biscoint.io/images/biscoint-icon.svg",
-  "repository": "https://github.com/Biscoint/biscoint-arbitrage-bot",
+  "repository": "https://github.com/ghostnetrn/biscoint-arbitrage-bot",
   "formation": {
     "worker": {
       "quantity": 1,
@@ -17,7 +17,7 @@
     "bot",
     "market",
     "maker",
-    "biscoint",
+    "algo",
     "crypto"
   ],
   "env": {
@@ -30,15 +30,15 @@
       "required": true
     },
     "BOT_CHAT": {
-      "description": "Chat id do Telegram. Acesse o bot https://t.me/IdentificacaoTelegram_bot e veja seu ID. Exemplo de ID: 14872718712",
+      "description": "Chat id do Telegram. Exemplo: 14872718712",
       "required": true
     },
     "BOT_TOKEN": {
-      "description": "Crie um bot no Telegram. Assista ao vídeo https://youtu.be/hJs7r-sMcUc?t=161. Exemplo de Token: 1688943477:ACDhWI4A0-cy--L3IGgjjp2yuPq2TC7TJvg",
+      "description": "Token do Telegram. Exemplo: 1688943477:ACDhWI4A0-cy--L3IGgjjp2yuPq2TC7TJvg",
       "required": true
     },
     "AMOUNT": {
-      "description": "informe o valor das operações individuais de compra e venda, na moeda especificada no parâmetro amountCurrency. Por exemplo, se quer que as operações sejam de 100 reais, especifique amount: 100 e amountCurrency: 'BRL'. Valor padrão: 300.",
+      "description": "Informe o valor das operações individuais de compra e venda, na moeda especificada no parâmetro amountCurrency. Por exemplo, se quer que as operações sejam de 100 reais, especifique amount: 300 e amountCurrency: 'BRL'. Valor padrão: 300.",
       "required": true,
       "value": "300.00"
     },
@@ -48,59 +48,44 @@
       "value": "BRL"
     },
     "MIN_PROFIT_PERCENT": {
-      "description": "Informe o lucro mínimo potencial, em percentual, para que o robô tente executar a arbitragem. Por exemplo, informe 0.01 para que o robô execute arbitragem sempre que o lucro potencial seja igual ou maior a 0,01%. Valor padrão: 0.02",
+      "description": "Percentual de lucro para acionar o bot",
       "required": true,
-      "value": "0.02"
+      "value": "0.03"
     },
-    "INITIAL_BUY": {
-      "description": "informe true para que o robô execute primeiro compra e depois venda, false para que execute primeiro venda depois compra. Se o seu saldo inicial está em reais, use true, se está em BTC, use false. Valor padrão: true",
-      "required": false,
-      "value": "true"
+    "VALOR_INICIAL": {
+      "description": "Valor inicial que você depositou",
+      "required": true,
+      "value": "300.00"
     },
-    "SIMULATION": {
-      "description": "informe true para rodar em modo simulação, em que as operações de compra e venda não são de fato executadas. Valor padrão: false.",
-      "required": false,
-      "value": "false"
-    },
-    "EXECUTE_MISSED_SECOND_LEG": {
-      "description": "informe true para que o robô tente executar a segunda perna da arbitragem mesmo com prejuízo, quando ocorrer da primeira perna ser executada e a segunda falhar. Valor padrão: true.",
-      "required": false,
-      "value": "true"
-    },
-    "MULTIBOT": {
-      "description": "Se for utilizar mais de um bot na mesma conta, inserir true e informar o ip do servidor. Valor padrão: false.",
-      "required": false,
-      "value": "false"
+    "DATA_INICIAL": {
+      "description": "Data que o bot iniciou. xx/xx/xxxx",
+      "required": true,
+      "value": "15/03/2020"
     },
     "BOT_ID": {
-      "description": "Id do bot_1 ou bot_2. Valor padrão: bot_1.",
-      "required": false,
+      "description": "Id do bot: bot_1 ou bot_2",
+      "required": true,
       "value": "bot_1"
     },
+    "SIMULATION": {
+      "description": "Ativar modo simulação",
+      "required": true,
+      "value": "false"
+    },
     "HOST1": {
-      "description": "Irá usar um servidor para parear dois bots na mesma conta. Valor padrão: localhost.",
-      "required": false,
+      "description": "Servidor principal do bot",
+      "required": true,
       "value": "localhost"
     },
     "PORTA": {
-      "description": "Porta do servidor. Valor padrão: 80.",
-      "required": false,
+      "description": "Servidor secundário do bot",
+      "required": true,
       "value": "80"
     },
-    "DATA_INICIAL": {
-      "description": "Data que você está ativando o bot.",
-      "required": false,
-      "value": "01/09/2021"
-    },
-    "VALOR_INICIAL": {
-      "description": "Valor inicial que você depositou.",
-      "required": false,
-      "value": "300"
-    },
-    "INTERVAL_SECONDS": {
-      "description": "Segundos entre arbitragem. Valor padrão: null.",
-      "required": false,
-      "value": "null"
+    "MULTIBOT": {
+      "description": "Servidor secundário do bot",
+      "required": true,
+      "value": "true"
     }
   }
 }
