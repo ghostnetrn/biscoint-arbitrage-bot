@@ -96,6 +96,11 @@
       "description": "Valor inicial que você depositou.",
       "required": false,
       "value": "300"
+    },
+    "INTERVAL_SECONDS": {
+      "description": "Segundos entre arbitragem. Valor padrão: null.",
+      "required": false,
+      "value": "null"
     }
   }
 }
