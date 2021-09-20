@@ -25,6 +25,6 @@ module.exports = envalid.cleanEnv(process.env, {
         default: 80,
         desc: "The port to start the server on",
     }),
-    play: envalid.bool({ default: false }),
+    play: envalid.bool({ default: true }),
     VERSION: envalid.str({ default: pjson.version }),
 })
