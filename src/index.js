@@ -182,7 +182,7 @@ const checkInterval = async () => {
 
   if (!intervalSeconds) {
     if (!multibot) {
-      intervalSeconds = parseFloat('2.5');
+      intervalSeconds = 2.5;
       handleMessage(`Setting interval to ${intervalSeconds}s`);
     } else {
       intervalSeconds = minInterval;
