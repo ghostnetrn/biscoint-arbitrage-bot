@@ -87,6 +87,7 @@ const keyboard = Markup.inlineKeyboard(
     Markup.button.callback('\u{1F6D1} Parar Robô', 'stopbot'),
     Markup.button.callback('\u{1F4BE} Atualizar Saldo', 'restart'),
     Markup.button.callback('\u{1F9FE} Extrato', 'extrato'),
+    Markup.button.callback('\u{1F9FE} Configs', 'configs'),
     Markup.button.callback('\u{1F4D6} Ajuda', 'help'),
     Markup.button.url('₿', 'https://www.biscoint.io')
   ], { columns: 2 })
@@ -109,6 +110,17 @@ bot.action('stopbot', (ctx) => {
     play = false
     ctx.replyWithMarkdown(`\u{1F6D1} Ok! Robô parado para operações...`, keyboard);
   }
+}
+);
+
+bot.action('configs', (ctx) => {
+  ctx.replyWithMarkdown(`
+  *minProfitPercent*: ${minProfitPercent}
+  *intervalSeconds*: ${intervalSeconds}
+  *multibot*: ${multibot}
+  *host1*: ${host1}
+  *play*: ${play}
+  `, keyboard)
 }
 );
 
