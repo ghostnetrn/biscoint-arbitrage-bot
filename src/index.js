@@ -381,9 +381,9 @@ async function tradeCycle() {
                 //await sleep(500);
                 //process.exit(1);
                 // Vende o saldo em BTC com stop loss
+                let { BRL, BTC } = await bc.balance();
                 if (BTC >= 0.0001) {
                   try {
-                    let { BRL, BTC } = await bc.balance();
                     bot.telegram.sendMessage(botchat, `Tentando realizar o lucro!`)
                     let lucroRealizado = await realizarLucro(BTC)
                     if (lucroRealizado) {
@@ -404,9 +404,9 @@ async function tradeCycle() {
       } catch (error) {
         handleMessage(`[${tradeCycleCount}] Error on get offer: ${error.error || error.message}`, 'error');
         console.error(error);
+        let { BRL, BTC } = await bc.balance();
         if (BTC >= 0.0001) {
           try {
-            let { BRL, BTC } = await bc.balance();
             bot.telegram.sendMessage(botchat, `Tentando realizar o lucro!`)
             let lucroRealizado = await realizarLucro(BTC)
             if (lucroRealizado) {
