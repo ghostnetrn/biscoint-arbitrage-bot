@@ -338,7 +338,9 @@ async function tradeCycle() {
 
           } catch (error) {
             handleMessage(`[${tradeCycleCount}] Error on confirm offer: ${error.error}`, 'error');
-            bot.telegram.sendMessage(botchat, `[${tradeCycleCount}] Error on confirm offer: ${error.error}`)
+            let { BRL, BTC } = await bc.balance();
+            bot.telegram.sendMessage(botchat, `[${tradeCycleCount}] Error on confirm offer: ${error.error}
+            BRL: ${BRL}, BTC: ${BTC}`)
             console.error(error);
 
             if (firstLeg && !secondLeg) {
